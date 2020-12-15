@@ -1,0 +1,203 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[OT4]{fontenc}
+\usepackage{amsmath}
+%\usepackage{dsfont}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage{amssymb}
+%\usepackage[landscape,margin=1cm]{geometry}
+\usepackage[a5paper]{geometry}
+%\usepackage{fullpage}
+\usepackage{colortbl}
+\title{Reducing parasitic currents}
+\author{\L{}ukasz \L{}aniewski-Wo\l{}\l{}k\footnote{llaniewski@meil.pw.edu.pl, C-CFD group, Warsaw University of Technology. http://c-cfd.meil.pw.edu.pl/}}
+
+%\newcommand{\R}{\mathds{R}}
+\newcommand{\pr}[1]{\frac{\partial}{\partial #1}}
+\newcommand{\rr}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\ppr}[1]{\frac{\partial^2}{\partial #1^2}}
+\newcommand{\prr}[2]{\frac{\partial^2}{\partial #1\partial #2}}
+\newcommand{\rpr}[2]{\frac{\partial^2 #1}{\partial #2^2}}
+\newcommand{\rrr}[3]{\frac{\partial^2 #1}{\partial #2\partial #3}}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\eq}{\text{eq}}
+\newcommand{\x}{\overline{x}}
+\renewcommand{\t}{\overline{t}}
+\newcommand{\f}{\tilde{f}}
+\newcommand{\m}{\tilde{m}}
+\renewcommand{\c}{\tilde{c}}
+\begin{document}
+
+\[\pr{t}f_i + e_i\nabla f_i = \Omega_i(f)\]
+
+
+\[f_i(\x,\t) - f_i(x,t) = \frac{1}{2}\left(\Omega_i(f(\x,\t))+\Omega_i(f(x,t))\right)\]
+
+\[f_i(\x,\t) - \frac{1}{2}\Omega_i(f(\x,\t)) = \frac{1}{2}\Omega_i(f(x,t)) + f_i(x,t)\]
+
+\[\f_i(x,t) = f_i(x,t) - \frac{1}{2}\Omega_i(f(x,t))\]
+
+\[\f_i(x,t) = \left(\text{Id} - \frac{1}{2}\Omega_i\right)(f(x,t))\]
+
+
+\[\f_i(\x,\t) = \Omega_i(f(x,t)) + \f_i(x,t)\]
+
+\[\f_i(\x,\t) = 2(f_i(x,t) - \f_i(x,t)) + \f_i(x,t)\]
+\[\f_i(\x,\t) = 2f_i(x,t) - \f_i(x,t)\]
+
+\[\f_i(\x,\t) = 2\left(\text{Id} - \frac{1}{2}\Omega_i\right)^{-1}\f_i(x,t) - \f_i(x,t)\]
+
+
+\newpage
+
+\newcommand{\C}{\mathcal{C}}
+\[c = \C(f)\]
+\[f = \C^{-1}(c)\]
+
+\[\dot f_i = \rr{\C^{-1}_i}{c_j}(c)\dot c_j\]
+
+\[\dot f_i = \rr{\C^{-1}_i}{c_j}(c)\gamma_j(c^\eq_j-c_j)\]
+
+\[\pr{t}f_i + e_i\nabla f_i = \rr{\C^{-1}_i}{c_j}(c)\gamma_j(c^\eq_j-c_j)\]
+
+
+\[f_i(\x,\t) - f_i(x,t) = \frac{1}{2}\left(\rr{\C^{-1}_i}{c_j}(c(\x,\t))\gamma_j(c^\eq_j(\x,\t)-c_j(\x,\t)) + \rr{\C^{-1}_i}{c_j}(c(x,t))\gamma_j(c^\eq_j(x,t)-c_j(x,t))\right)\]
+
+\[f_i(\x,\t) - \frac{1}{2}\left(\rr{\C^{-1}_i}{c_j}(c(\x,\t))\gamma_j(c^\eq_j(\x,\t)-c_j(\x,\t))\right) = \frac{1}{2}\left( \rr{\C^{-1}_i}{c_j}(c(x,t))\gamma_j(c^\eq_j(x,t)-c_j(x,t))\right) + f_i(x,t)\]
+
+\[\f_i = f_i - \frac{1}{2}\rr{\C^{-1}_i}{c_j}\gamma_j(c^\eq_j-\C_j(f))\]
+
+
+\[\f_i = \rr{\C^{-1}_i}{c_j}\left(\left(\rr{\C^{-1}_i}{c_j}\right)^{-1}f_j + \frac{\gamma_j}{2}(\C_j(f) - c^\eq_j)\right)\]
+
+\[\f_i = \rr{\C^{-1}_i}{c_j}\left(\left(\rr{\C^{-1}_i}{c_j}\right)^{-1}f_j + \frac{\gamma_j}{2}(\C_j(f) - c^\eq_j)\right)\]
+
+
+\[\rr{\C_j}{f_i}\f_i + \frac{\gamma_j}{2}c^\eq_j = \rr{\C_j}{f_i}f_i + \frac{\gamma_j}{2}\C_j(f)\]
+
+
+
+\[M_{ji}\f_i + \frac{\gamma_j}{2}m^\eq_j = M_{ji}f_i + \frac{\gamma_j}{2}M_{ji}f_i\]
+
+\[M_{ji}\f_i + \frac{\gamma_j}{2}m^\eq_j = (1+\frac{\gamma_j}{2})M_{ji}f_i\]
+
+\[\frac{2}{2+\gamma_j}M_{ji}\f_i + \frac{\gamma_j}{2+\gamma_j}m^\eq_j = M_{ji}f_i\]
+
+
+\newpage
+
+\[\left(\text{Id} - \frac{1}{2}\C\right)^{-1}\]
+
+\newpage
+
+\[c_j = \sum_k \Gamma^{\sigma_k}\prod_i m_{\sigma_i}\]
+\[\rr{c_j}{m_n} = \sum_k 1_{n\in\sigma_k}\frac{1}{m_n}\Gamma^{\sigma_k}\prod_i m_{\sigma_i}\]
+
+\[\sum_n\rr{c_j}{m_n}m_n = \sum_n\sum_k 1_{n\in\sigma_k}\Gamma^{\sigma_k}\prod_i m_{\sigma_i}\]
+
+\[\sum_n\rr{c_j}{m_n}m_n = \sum_k |\sigma_k|\Gamma^{\sigma_k}\prod_i m_{\sigma_i}\]
+
+
+
+\newpage
+
+
+\[m_i = c_i + \Gamma_i(c_1,\ldots,c_{i-1})\]
+\[\rr{m_i}{c_j} = \begin{cases}
+0 & j > i\\
+1 & j = 1\\
+\rr{\Gamma_i}{c_j} & j < i
+\end{cases}\]
+
+\[c_i = m_i - \Gamma_i(c_1,\ldots,c_{i-1})\]
+
+
+\[\m_i = m_i - \frac{1}{2}\rr{m_i}{c_j}\gamma_j(c^\eq_j-c_j)\]
+
+\[\m_i = m_i - \frac{1}{2}\gamma_i(c^\eq_i-c_i) - \frac{1}{2}\rr{\Gamma_i}{c_j}\gamma_j(c^\eq_j-c_j)\]
+
+\[\m_i = m_i - \frac{1}{2}\gamma_i(c^\eq_i-m_i + \Gamma_i(c_1,\ldots,c_{i-1})) - \frac{1}{2}\rr{\Gamma_i}{c_j}\gamma_j(c^\eq_j-c_j)\]
+
+
+\[(1+\frac{\gamma_i}{2}) m_i = \m_i + \frac{1}{2}\gamma_i(c^\eq_i + \Gamma_i(c_1,\ldots,c_{i-1})) + \frac{1}{2}\rr{\Gamma_i}{c_j}\gamma_j(c^\eq_j-c_j)\]
+
+\[m_i = \frac{2}{2+\gamma_i}\left(\m_i + \frac{1}{2}\gamma_i(c^\eq_i + \Gamma_i(c_1,\ldots,c_{i-1})) + \frac{1}{2}\rr{\Gamma_i}{c_j}\gamma_j(c^\eq_j-c_j)\right)\]
+
+
+\[2m_i - \m_i = \frac{2-\gamma_i}{2+\gamma_i}\m_i + \frac{2}{2+\gamma_i}\left(\gamma_i(c^\eq_i + \Gamma_i(c_1,\ldots,c_{i-1})) + \rr{\Gamma_i}{c_j}\gamma_j(c^\eq_j-c_j)\right)\]
+
+
+\[2m_i - \m_i = \omega_i\m_i + (1-\omega_i)(c^\eq_i + \Gamma_i(c_1,\ldots,c_{i-1})) + \frac{2}{2+\gamma_i}\rr{\Gamma_i}{c_j}\gamma_j(c^\eq_j-c_j)\]
+
+
+\newpage
+
+\[c_i = - \Gamma_i(c_1,\ldots,c_{i-1}) \]
+\[m_i = \frac{2}{2+\gamma_i}\left(\m_i + \frac{1}{2}\gamma_i(c^\eq_i - c_i) + \frac{1}{2}\rr{\Gamma_i}{c_j}\gamma_j(c^\eq_j-c_j)\right)\]
+\[c_i = c_i + m_i\]
+\[m_i^\ast = 2m_i - \m_i\]
+or:
+\[c_i = \m_i - \Gamma_i(c_1,\ldots,c_{i-1}) \]
+\[w = \frac{2}{2+\gamma_i}\left(\frac{1}{2}\gamma_i(c^\eq_i - c_i) + \frac{1}{2}\rr{\Gamma_i}{c_j}\gamma_j(c^\eq_j-c_j)\right)\]
+\[c_i = c_i + w\]
+\[m_i^\ast = \m_i + 2w\]
+or:
+
+
+\[c_i = - \Gamma_i(c_1,\ldots,c_{i-1}) \]
+\[c_i = \frac{2}{2+\gamma_i}(\m_i + c_i) + \frac{\gamma_i}{2+\gamma_i}c^\eq_i + \frac{2}{2+\gamma_i}\frac{1}{2}\rr{\Gamma_i}{c_j}\gamma_j(c^\eq_j-c_j)\]
+\[c_i = c_i + m_i\]
+\[m_i^\ast = 2m_i - \m_i\]
+
+\newpage
+
+\[\m_i = m_i - \frac{1}{2}\rr{m_i}{c_j}\gamma_j(c^\eq_j-c_j)\]
+\[h_j = \gamma_j(c^\eq_j-c_j)\]
+\[w_i = \rr{m_i}{c_j}h_j\]
+\[m_i = c_i + \sum_{jk}\Gamma^{ijk}c_jm_k\]
+\[\rr{m_i}{c_p} = \delta_{ip} + \sum_{jk}\Gamma^{ijk}\left(\delta_{jp}m_k + c_j\rr{m_k}{c_p}\right)\]
+
+\[w_i = \rr{m_i}{c_p}h_p = h_i + \sum_{jk}\Gamma^{ijk}\left(h_j m_k + c_j\rr{m_k}{c_p}h_p\right)\]
+
+\[w_i = \rr{m_i}{c_p}h_p = h_i + \sum_{jk}\Gamma^{ijk}\left(h_j m_k + c_jw_k\right)\]
+
+\[w_i = \gamma_i(c^\eq_i-c_i) + \sum_{jk}\Gamma^{ijk}\left(h_j m_k + c_jw_k\right)\]
+
+\[w_i = \gamma_i(c^\eq_i-m_i + \sum_{jk}\Gamma^{ijk}c_jm_k) + \sum_{jk}\Gamma^{ijk}\left(h_j m_k + c_jw_k\right)\]
+
+\[w_i = \gamma_i(c^\eq_i-\m_i-\frac{1}{2}w_i + \sum_{jk}\Gamma^{ijk}c_jm_k) + \sum_{jk}\Gamma^{ijk}\left(h_j m_k + c_jw_k\right)\]
+
+\[(1+\frac{\gamma_i}{2})w_i = \gamma_i(c^\eq_i-\m_i + \sum_{jk}\Gamma^{ijk}c_jm_k) + \sum_{jk}\Gamma^{ijk}\left(h_j m_k + c_jw_k\right)\]
+
+
+\[\m_i = m_i - \frac{1}{2}w_i\]
+\[m_i^\ast = 2m_i - \m_i = \m_i+w_i\]
+\[w_i = \m_i - m_i^\ast\]
+
+\[\c_i = \m_i + \sum_{jk}\Gamma^{ijk}c_jm_k\]
+\[m_i^\ast = \m_i+\frac{2}{2+\gamma_i}\left(\gamma_i(c^\eq_i-\c_i) + \sum_{jk}\Gamma^{ijk}\left(h_j m_k + c_jw_k\right)\right)\]
+
+\newpage
+
+A moment $m_i$ can be expressed as $c_i$ plus a combination of products of lower order moments and cumulants. We can thus say that:
+\[m_i = c_i + \Gamma^{jk}_i c_j m_k\]
+It can be also used the other way around:
+\[c_i = m_i - \Gamma^{jk}_i c_j m_k\]
+For a given vector $h_i$ we can define a vector $w_i$:
+\[w_i = \rr{m_i}{c_j}h_j\]
+This creates a recursive expression:
+\begin{align*}w_i
+&= \rr{m_i}{c_j}h_j =\\
+&= \left(\delta_i^j + \Gamma^{ab}_i\left(\delta_a^j m_b + c_a\rr{m_b}{c_j}\right)\right)h_j=\\
+&= h_i + \Gamma^{ab}_i \left(h_a m_b + c_a w_b\right)
+\end{align*}
+Now let us say that:
+\[h_i = \Omega_i^j(c^\eq_j-c_j)\]
+
+\end{document}
+
